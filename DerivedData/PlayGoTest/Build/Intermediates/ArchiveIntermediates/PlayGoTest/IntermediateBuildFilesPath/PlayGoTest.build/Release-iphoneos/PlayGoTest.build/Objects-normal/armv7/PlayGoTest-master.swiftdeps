@@ -1,0 +1,11 @@
+version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
+options: "dd0ee126b0220bc833408b1e03f0a002"
+build_time: [552920211, 656680000]
+inputs:
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/LocationModel.swift": [9223372036854775807, 0]
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/ViewController.swift": [9223372036854775807, 0]
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/AlphaModel.swift": [9223372036854775807, 0]
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/DetailViewController.swift": [9223372036854775807, 0]
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/TableViewCell1.swift": [9223372036854775807, 0]
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/AppDelegate.swift": [9223372036854775807, 0]
+  "/Users/user/Documents/PlayGoTest/PlayGoTest/HomeModel.swift": [9223372036854775807, 0]
