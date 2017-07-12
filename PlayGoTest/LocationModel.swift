@@ -44,10 +44,11 @@ class LocationModel: NSObject {
         self.date = date
         
     }
-    var location: CLLocation {
+     var location: CLLocation {
         
-        return CLLocation(latitude: Double(self.latitude!)!, longitude: Double(self.latitude!)!);
+        return CLLocation(latitude: Double(self.latitude!)!, longitude: Double(self.longitude!)!);
     }
+
     
     func distance(to location: CLLocation) -> CLLocationDistance {
         let distanceinmeter = location.distance(from: self.location)
