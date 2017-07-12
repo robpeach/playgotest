@@ -50,7 +50,9 @@ class LocationModel: NSObject {
     }
     
     func distance(to location: CLLocation) -> CLLocationDistance {
-        return location.distance(from: self.location)
+        let distanceinmeter = location.distance(from: self.location)
+        let distanceinmiles = distanceinmeter / 1609.344;
+        return distanceinmiles;
     }
     
     //prints object's current state
