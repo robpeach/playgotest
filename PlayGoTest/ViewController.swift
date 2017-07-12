@@ -14,9 +14,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var listTableView: UITableView!
     
     @IBOutlet weak var azButton: UIButton!
-    
+    @IBOutlet weak var distanceButton: UIButton!
+    @IBOutlet weak var lblCurrentLOcation  :UILabel!
+    var sortedbyDistance : Bool!
     var feedItems: NSArray = NSArray()
-    
+    var currentLocation : CLLocation!
     
     
     var locationManager: CLLocationManager!
@@ -28,11 +30,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
+        sortedbyDistance = false;
         self.listTableView.delegate = self
         self.listTableView.dataSource = self
         
-        
+        lblCurrentLOcation.text = "cmyLocation: 0 , 0";
         listTableView.register(UINib(nibName: "TableViewCell1", bundle: nil), forCellReuseIdentifier: "TableViewCell1")
         
         navigationController?.hidesBarsOnSwipe = true
@@ -49,19 +51,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         azButton.layer.borderWidth = 0
         azButton.layer.borderColor = UIColor.clear.cgColor
         
+        distanceButton.backgroundColor = .orange
+        distanceButton.layer.cornerRadius = 5
+        distanceButton.layer.borderWidth = 0
+        distanceButton.layer.borderColor = UIColor.clear.cgColor
+        
+
         
         let homeModel = HomeModel()
         homeModel.delegate = self
         homeModel.downloadItems()
         listTableView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData(sender:)), for: .valueChanged)
-
+        
         
         
         
     }
     
-   
+    
     
     
     func refreshData(sender: UIRefreshControl) {
@@ -83,7 +91,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func itemsDownloaded(items: NSArray) {
         
         feedItems = items
-        
+        if(sortedbyDistance && currentLocation != nil)
+        {
+            feedItems =    feedItems.sorted(by: { ($0 as! LocationModel).distance(to: currentLocation) < ($1 as! LocationModel).distance(to: currentLocation) }) as NSArray;
+        }
         //sort for distance
         
         //
@@ -111,7 +122,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         myCell.selectionStyle = .none
         myCell.eventLabel.text = item.event
         myCell.venueLabel.text = item.name
+        let distance = item.distance(to: currentLocation);
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        let  strDistanceInMiles = formatter.string(from: NSNumber(value: distance)) ?? "\(distance)"
         
+        myCell.distanceLable.text = strDistanceInMiles + " miles" ;
         
         let stringB = formattedDateFromString(dateString: (item.date)!, withFormat: "d MMM")
         
@@ -126,7 +143,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         
-        
+        print(indexPath.row);
+        print(item.distance(to: currentLocation));
         
         return myCell
     }
@@ -154,7 +172,38 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let alphaModel = AlphaModel()
         alphaModel.delegate = self
         alphaModel.downloadItems()
+        sortedbyDistance  = false;
+        DispatchQueue.main.async{
+            
+            self.listTableView.reloadData()
+        }
+    }
+    
+    @IBAction func sortByDistancePressed(_ sender: Any) {
+        //        let alphaModel = AlphaModel()
+        //        alphaModel.delegate = self
+        //        alphaModel.downloadItems()
+        if(currentLocation == nil)
+        {
+            var alert = UIAlertController.init(title: "", message: "Current location not available", preferredStyle:  UIAlertControllerStyle.alert);
+            alert.show(self, sender: distanceButton);
+            
+        }
+        sortedbyDistance  = true;
         
+        // { delete following code at the end
+        print ("distance before Sort");
+        for item in feedItems{
+            
+            print((item as! LocationModel).distance(to: currentLocation));
+        }
+        ///}
+        feedItems =    feedItems.sorted(by: { ($0 as! LocationModel).distance(to: currentLocation) < ($1 as! LocationModel).distance(to: currentLocation) }) as NSArray;
+        print( "after sort");
+        for item in feedItems{
+            
+            print((item as! LocationModel).distance(to: currentLocation));
+        }
         DispatchQueue.main.async{
             
             self.listTableView.reloadData()
@@ -186,15 +235,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
             print("locations = \(locValue.latitude) \(locValue.longitude)")
             
-         
             
-//            let location1 = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
-//            let location2 = CLLocation(latitude: CLLocationDegrees(selectedLocation.latitude!), longitude: CLLocationDegrees(selectedLocation.longitude!))
-//            let distance = location1.distance(from: location2)
             
-//            let sortDescriptor = NSSortDescriptor(key: "\(distance)", ascending: true)
-//            feedItems = feedItems.sortedArray(using: [sortDescriptor]) as NSArray
-    
+            //            let location1 = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
+            //            let location2 = CLLocation(latitude: CLLocationDegrees(selectedLocation.latitude!), longitude: CLLocationDegrees(selectedLocation.longitude!))
+            //            let distance = location1.distance(from: location2)
+            
+            //            let sortDescriptor = NSSortDescriptor(key: "\(distance)", ascending: true)
+            //            feedItems = feedItems.sortedArray(using: [sortDescriptor]) as NSArray
+            
             
             
         }//if authorized
@@ -203,12 +252,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     
     
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
+    {
+        currentLocation = manager.location;
+        let formatter = NumberFormatter()
+        formatter.minimumFractionDigits = 3
+        formatter.maximumFractionDigits = 3
+        
+        let lat = formatter.string(from: NSNumber(value: currentLocation.coordinate.latitude));
+        let lon = formatter.string(from: NSNumber(value: currentLocation.coordinate.longitude));
+        lblCurrentLOcation.text = "myLocation: " + lat! + ", " + lon!;
+    }
 }
 
