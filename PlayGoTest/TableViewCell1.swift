@@ -18,7 +18,8 @@ extension UIImageView {
 
 class TableViewCell1: UITableViewCell {
     @IBOutlet weak var eventLabel: UILabel!
-
+    @IBOutlet weak var distanceLable: UILabel!
+    
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var backgroundCardView: UIView!
     @IBOutlet weak var eventImage: UIImageView!
@@ -42,10 +43,10 @@ class TableViewCell1: UITableViewCell {
     }
     
     
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
