@@ -281,7 +281,7 @@ SWIFT_CLASS("_TtC10PlayGoTest14ViewController")
 - (IBAction)sortByDistancePressed:(id _Nonnull)sender;
 - (NSString * _Nullable)formattedDateFromStringWithDateString:(NSString * _Nonnull)dateString withFormat:(NSString * _Nonnull)format SWIFT_WARN_UNUSED_RESULT;
 - (void)locationManager:(CLLocationManager * _Nonnull)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
-- (IBAction)dndPressed:(id _Nonnull)sender;
+- (IBAction)todayPressed:(id _Nonnull)sender;
 - (void)didReceiveMemoryWarning;
 - (void)locationManager:(CLLocationManager * _Nonnull)manager didUpdateLocations:(NSArray<CLLocation *> * _Nonnull)locations;
 - (nonnull instancetype)initWithNibName:(NSString * _Nullable)nibNameOrNil bundle:(NSBundle * _Nullable)nibBundleOrNil OBJC_DESIGNATED_INITIALIZER;

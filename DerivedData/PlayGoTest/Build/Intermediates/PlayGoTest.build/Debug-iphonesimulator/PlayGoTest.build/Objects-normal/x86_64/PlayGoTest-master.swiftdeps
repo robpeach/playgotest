@@ -1,9 +1,9 @@
 version: "Apple Swift version 3.1 (swiftlang-802.0.53 clang-802.0.42)"
 options: "b1e18be774778b1690d7900f480f44bc"
-build_time: [553193937, 848691000]
+build_time: [553204517, 468852000]
 inputs:
   "/Users/user/Downloads/playgotest-master/PlayGoTest/LocationModel.swift": [553190031, 0]
-  "/Users/user/Downloads/playgotest-master/PlayGoTest/ViewController.swift": [553193936, 0]
+  "/Users/user/Downloads/playgotest-master/PlayGoTest/ViewController.swift": [553204317, 0]
   "/Users/user/Downloads/playgotest-master/PlayGoTest/AlphaModel.swift": [553190031, 0]
   "/Users/user/Downloads/playgotest-master/PlayGoTest/FirstViewController.swift": [553184633, 0]
   "/Users/user/Downloads/playgotest-master/PlayGoTest/DetailViewController.swift": [552983950, 0]

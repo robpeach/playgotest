@@ -11,7 +11,6 @@ provides-dynamic-lookup:
 - "currentLocation"
 - "didReceiveMemoryWarning"
 - "distanceButton"
-- "dndPressed"
 - "feedItems"
 - "formattedDateFromString"
 - "itemsDownloaded"
@@ -23,6 +22,7 @@ provides-dynamic-lookup:
 - "selectedLocation"
 - "sortByDistancePressed"
 - "tableView"
+- "todayPressed"
 - "viewDidLoad"
 depends-top-level:
 - !private "!="
@@ -1292,7 +1292,6 @@ depends-member:
 - !private ["CSo8NSObject", "distance"]
 - ["CSo8NSObject", "distanceButton"]
 - !private ["CSo8NSObject", "distanceLable"]
-- ["CSo8NSObject", "dndPressed"]
 - !private ["CSo8NSObject", "downloadItems"]
 - !private ["CSo8NSObject", "endRefreshing"]
 - !private ["CSo8NSObject", "event"]
@@ -1361,6 +1360,7 @@ depends-member:
 - !private ["CSo8NSObject", "text"]
 - !private ["CSo8NSObject", "time"]
 - !private ["CSo8NSObject", "timeLabel"]
+- ["CSo8NSObject", "todayPressed"]
 - !private ["CSo8NSObject", "venueImage"]
 - !private ["CSo8NSObject", "venueLabel"]
 - ["CSo8NSObject", "viewDidLoad"]
@@ -1923,7 +1923,6 @@ depends-member:
 - ["CSo11UIResponder", "didReceiveMemoryWarning"]
 - ["CSo11UIResponder", "distanceButton"]
 - !private ["CSo11UIResponder", "distanceLable"]
-- ["CSo11UIResponder", "dndPressed"]
 - !private ["CSo11UIResponder", "endRefreshing"]
 - !private ["CSo11UIResponder", "eventImage"]
 - !private ["CSo11UIResponder", "eventLabel"]
@@ -1975,6 +1974,7 @@ depends-member:
 - ["CSo11UIResponder", "tableView"]
 - !private ["CSo11UIResponder", "text"]
 - !private ["CSo11UIResponder", "timeLabel"]
+- ["CSo11UIResponder", "todayPressed"]
 - !private ["CSo11UIResponder", "venueImage"]
 - !private ["CSo11UIResponder", "venueLabel"]
 - ["CSo11UIResponder", "viewDidLoad"]
@@ -2462,7 +2462,6 @@ depends-member:
 - ["CSo16UIViewController", "currentLocation"]
 - ["CSo16UIViewController", "didReceiveMemoryWarning"]
 - ["CSo16UIViewController", "distanceButton"]
-- ["CSo16UIViewController", "dndPressed"]
 - ["CSo16UIViewController", "feedItems"]
 - ["CSo16UIViewController", "formattedDateFromString"]
 - !private ["CSo16UIViewController", "hidesBarsOnSwipe"]
@@ -2504,6 +2503,7 @@ depends-member:
 - ["CSo16UIViewController", "sortByDistancePressed"]
 - ["CSo16UIViewController", "sortedbyDistance"]
 - ["CSo16UIViewController", "tableView"]
+- ["CSo16UIViewController", "todayPressed"]
 - ["CSo16UIViewController", "viewDidLoad"]
 - ["CSo16UIViewController", "viewForZooming"]
 - ["CSo16UIViewController", "viewForZoomingInScrollView"]
@@ -2555,7 +2555,6 @@ depends-member:
 - ["C10PlayGoTest14ViewController", "deinit"]
 - ["C10PlayGoTest14ViewController", "didReceiveMemoryWarning"]
 - ["C10PlayGoTest14ViewController", "distanceButton"]
-- ["C10PlayGoTest14ViewController", "dndPressed"]
 - ["C10PlayGoTest14ViewController", "feedItems"]
 - ["C10PlayGoTest14ViewController", "formattedDateFromString"]
 - ["C10PlayGoTest14ViewController", "indexPathForPreferredFocusedView"]
@@ -2595,6 +2594,7 @@ depends-member:
 - ["C10PlayGoTest14ViewController", "sortByDistancePressed"]
 - ["C10PlayGoTest14ViewController", "sortedbyDistance"]
 - ["C10PlayGoTest14ViewController", "tableView"]
+- ["C10PlayGoTest14ViewController", "todayPressed"]
 - ["C10PlayGoTest14ViewController", "viewDidLoad"]
 - ["C10PlayGoTest14ViewController", "viewForZooming"]
 - ["C10PlayGoTest14ViewController", "viewForZoomingInScrollView"]
@@ -2936,4 +2936,4 @@ depends-external:
 - "/Users/user/Downloads/playgotest-master/DerivedData/PlayGoTest/Build/Products/Debug-iphonesimulator/SDWebImage/SDWebImage.framework/Headers/UIImage+MultiFormat.h"
 - "/Users/user/Downloads/playgotest-master/DerivedData/PlayGoTest/Build/Products/Debug-iphonesimulator/SDWebImage/SDWebImage.framework/Headers/SDWebImageCompat.h"
 - "/Users/user/Downloads/playgotest-master/DerivedData/PlayGoTest/Build/Products/Debug-iphonesimulator/SDWebImage/SDWebImage.framework/Modules/module.modulemap"
-interface-hash: "d2b47fab27e5dd56753bd87219737e3c"
+interface-hash: "9f6362cf4f823cec47f273b61414e34a"
