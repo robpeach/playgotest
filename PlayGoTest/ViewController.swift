@@ -15,19 +15,63 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var azButton: UIButton!
     @IBOutlet weak var distanceButton: UIButton!
     @IBOutlet weak var lblCurrentLOcation  :UILabel!
+    @IBOutlet weak var todayBtn  :UIButton!
+    @IBOutlet weak var tomorrowBtn : UIButton!
+    @IBOutlet weak var satBtn : UIButton!
+    @IBOutlet weak var sunBtn : UIButton!
+    @IBOutlet weak var allBtn : UIButton!
+    @IBOutlet weak  var satBtnWidth : NSLayoutConstraint!
     var sortedbyDistance : Bool!
     var feedItems: NSArray = NSArray()
+    var filteredFeedItems: NSArray = NSArray()
     var currentLocation : CLLocation!
-    
+    var filteredType : FilterType!
     
     var locationManager: CLLocationManager!
     
     var selectedLocation : LocationModel = LocationModel()
     private let refreshControl = UIRefreshControl()
+    enum FilterType : Int{
+        case nothing
+        case today
+        case tomorrow
+        case saturday
+        case sunday
+        
+    }
+    func ConfigButtonUI(btn : UIButton)
+    {
+        btn.layer.cornerRadius = 5
+        btn.layer.borderWidth = 0
+        btn.layer.borderColor = UIColor.clear.cgColor
+    }
     
-    
+    func getDayOfWeek()->Int {
+        
+        let todayDate = Date()
+        let myCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        let myComponents = myCalendar.components(.weekday, from: todayDate)
+        let weekDay = myComponents.weekday
+        return weekDay!
+    }
+    func  getWeekend( day: Int) -> Date{
+        
+        let today = Date()
+        let calendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+        
+        let todayWeekday = getDayOfWeek()
+        
+        let addWeekdays = 7 - todayWeekday + day
+        var components = DateComponents()
+        components.weekday = addWeekdays
+        
+        let nextweekend = calendar.date(byAdding: components, to: today, options: .matchFirst)
+        return nextweekend!
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
+        filteredType = FilterType.nothing
         // Do any additional setup after loading the view, typically from a nib.
         sortedbyDistance = false;
         self.listTableView.delegate = self
@@ -44,18 +88,30 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         
+        ConfigButtonUI(btn: azButton);
+        ConfigButtonUI(btn: distanceButton);
+        ConfigButtonUI(btn: todayBtn);
+        ConfigButtonUI(btn: tomorrowBtn);
+        ConfigButtonUI(btn: satBtn);
+        ConfigButtonUI(btn: sunBtn);
+        ConfigButtonUI(btn: allBtn);
+        let today = getDayOfWeek();
         
-        azButton.backgroundColor = .orange
-        azButton.layer.cornerRadius = 5
-        azButton.layer.borderWidth = 0
-        azButton.layer.borderColor = UIColor.clear.cgColor
-        
-        distanceButton.backgroundColor = .orange
-        distanceButton.layer.cornerRadius = 5
-        distanceButton.layer.borderWidth = 0
-        distanceButton.layer.borderColor = UIColor.clear.cgColor
-        
-        
+        if(today == 5)
+        {
+            satBtnWidth.constant = 0;
+            satBtn.isHidden  = true;
+        }
+        if(today == 6)
+        {
+            satBtnWidth.constant = 0;
+            satBtn.isHidden = true;
+            sunBtn.isHidden = true;
+        }
+        if(today == 1)
+        {
+            sunBtn.isHidden = true;
+        }
         
         let homeModel = HomeModel()
         homeModel.delegate = self
@@ -64,11 +120,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData(sender:)), for: .valueChanged)
         
         
-        
-        
     }
-    
-    
     
     
     func refreshData(sender: UIRefreshControl) {
@@ -90,20 +142,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func itemsDownloaded(items: NSArray) {
         
         feedItems = items
-        if(sortedbyDistance && currentLocation != nil)
-        {
-            feedItems =    feedItems.sorted(by: { ($0 as! LocationModel).distance(to: currentLocation) < ($1 as! LocationModel).distance(to: currentLocation) }) as NSArray;
-        }
-        //sort for distance
-        
         //
-        
+        sortAndFilterData();
         self.listTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of feed items
-        return feedItems.count
+        return filteredFeedItems.count
         
     }
     
@@ -116,7 +162,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Retrieve cell
         let myCell = Bundle.main.loadNibNamed("TableViewCell1", owner: self, options: nil)?.first as! TableViewCell1
         // Get the location to be shown
-        let item: LocationModel = feedItems[indexPath.row] as! LocationModel
+        let item: LocationModel = filteredFeedItems[indexPath.row] as! LocationModel
         // Get references to labels of cell
         myCell.selectionStyle = .none
         myCell.eventLabel.text = item.event
@@ -131,7 +177,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let date12 = timeFormatter.string(from: date!)
         
         myCell.timeLabel.text = date12
-        
+        if(currentLocation != nil)
+        {
         let distance = item.distance(to: currentLocation);
         let formatter = NumberFormatter()
         formatter.minimumFractionDigits = 2
@@ -139,7 +186,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let  strDistanceInMiles = formatter.string(from: NSNumber(value: distance)) ?? "\(distance)"
         
         myCell.distanceLable.text = strDistanceInMiles + " miles" ;
-        
+        }
         let stringB = formattedDateFromString(dateString: (item.date)!, withFormat: "d MMM")
         
         myCell.dateLabel.text = stringB
@@ -153,8 +200,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         
-        print(indexPath.row);
-        print(item.distance(to: currentLocation));
+      
         
         return myCell
     }
@@ -162,7 +208,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected location to var
-        selectedLocation = feedItems[indexPath.row] as! LocationModel
+        selectedLocation = filteredFeedItems[indexPath.row] as! LocationModel
         // Manually call segue to detail view controller
         self.performSegue(withIdentifier: "detailSegue", sender: self)
         
@@ -187,6 +233,71 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             self.listTableView.reloadData()
         }
+    }
+    func ComapreDateAndDistance(obj1 : LocationModel, obj2 :LocationModel) -> Bool
+    {
+        
+        if(obj1.eventDate.compare(obj2.eventDate) == ComparisonResult.orderedSame)
+        {
+            return obj1.distance(to: currentLocation) < obj2.distance(to: currentLocation);
+        }
+        else{
+            return obj1.eventDate.compare(obj2.eventDate) == ComparisonResult.orderedDescending ? false : true;
+        }
+        
+    }
+    
+    func sortAndFilterData()
+    {
+        feedItems =    feedItems.sorted(by: {ComapreDateAndDistance(obj1: $0 as! LocationModel,obj2: $1 as! LocationModel)
+        }) as NSArray;
+        
+        if(filteredType != FilterType.nothing)
+        {
+            var dateToFilter = "";
+            let inputFormatter = DateFormatter()
+            inputFormatter.dateFormat = "yyyy-MM-dd"
+            
+            if(filteredType == FilterType.today)
+            {
+                let today  = Date()
+             dateToFilter =  inputFormatter.string(from: today);
+            }
+            else if (filteredType == FilterType.tomorrow)
+            {
+                var dtTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+                dateToFilter =  inputFormatter.string(from: dtTomorrow!);
+            }
+            else if (filteredType == FilterType.saturday)
+            {
+                dateToFilter =  inputFormatter.string(from: getWeekend(day: 0));
+            }
+            else if (filteredType == FilterType.sunday)
+            {
+            
+            
+                 dateToFilter =  inputFormatter.string(from: getWeekend(day: 1));
+               
+            }
+            
+            
+            let resultPredicate = NSPredicate(format: "date contains[c] %@", dateToFilter)
+            filteredFeedItems  = feedItems.filtered(using: resultPredicate) as NSArray
+        }
+        else{
+            filteredFeedItems  = feedItems.copy() as! NSArray;
+        }
+    }
+    @IBAction func sortbySelectedField(_ sender: Any)
+    {
+        filteredType = FilterType(rawValue:  (sender as! UIButton).tag )
+        sortAndFilterData()
+        
+        DispatchQueue.main.async{
+            
+            self.listTableView.reloadData()
+        }
+    
     }
     
     @IBAction func sortByDistancePressed(_ sender: Any) {
@@ -242,9 +353,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if status == .authorizedWhenInUse {
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
-            print("locations = \(locValue.latitude) \(locValue.longitude)")
-            
+//            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
+//            print("locations = \(locValue.latitude) \(locValue.longitude)")
+//
             
             
             //            let location1 = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
