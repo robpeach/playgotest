@@ -36,9 +36,9 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate {
         if status == .authorizedWhenInUse {
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
-            print("locations = \(locValue.latitude) \(locValue.longitude)")
-            
+//            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
+//            print("locations = \(locValue.latitude) \(locValue.longitude)")
+//            
             
             
             //            let location1 = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
@@ -52,7 +52,11 @@ class FirstViewController: UIViewController, CLLocationManagerDelegate {
             
         }//if authorized
     }//locationManager func declaration
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
+    {
+        currentLocation = manager.location;
     
+    }
 
     /*
     // MARK: - Navigation
