@@ -154,7 +154,7 @@
 				TargetAttributes = {
 					D41E5B941F0BAE6D003A0DEF = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = VR3XHNJL5Q;
+						DevelopmentTeam = 7S93L236D6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -377,11 +377,11 @@
 			baseConfigurationReference = D0A244CBAD9F435A370DDE71 /* Pods-PlayGoTest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = VR3XHNJL5Q;
+				DEVELOPMENT_TEAM = 7S93L236D6;
 				INFOPLIST_FILE = PlayGoTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redandyellow.PlayGoTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redandyellow.PlayGoTest.plusinfosys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -392,11 +392,11 @@
 			baseConfigurationReference = A2E6F98B454150D95A24E28D /* Pods-PlayGoTest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = VR3XHNJL5Q;
+				DEVELOPMENT_TEAM = 7S93L236D6;
 				INFOPLIST_FILE = PlayGoTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redandyellow.PlayGoTest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redandyellow.PlayGoTest.plusinfosys;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

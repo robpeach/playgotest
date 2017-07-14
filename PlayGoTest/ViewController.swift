@@ -71,6 +71,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         filteredType = FilterType.nothing
+        currentLocation = CLLocation(latitude: 0, longitude: 0)
         // Do any additional setup after loading the view, typically from a nib.
         sortedbyDistance = false;
         self.listTableView.delegate = self
@@ -188,6 +189,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             myCell.distanceLable.text = strDistanceInMiles + " miles" ;
         }
+        else
+        {
+            myCell.distanceLable.text = "N/A"
+        }
         let stringB = formattedDateFromString(dateString: (item.date)!, withFormat: "d MMM")
         
         myCell.dateLabel.text = stringB
@@ -293,6 +298,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     @IBAction func sortbySelectedField(_ sender: Any)
     {
+        let alphaModel = AlphaModel()
+        alphaModel.delegate = self
+        alphaModel.downloadItems()
         filteredType = FilterType(rawValue:  (sender as! UIButton).tag )
         sortAndFilterData()
         

@@ -170,12 +170,12 @@
                   moduleName = "PlayGoTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/darshana/Darshana/Paygotest/playgotest/PlayGoTest/FilteredViewController.swift"
-                  timestampString = "521982667.009193"
+                  timestampString = "521729337.95433"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "41"
                   endingLineNumber = "41"
-                  offsetFromSymbolStart = "35">
+                  offsetFromSymbolStart = "36">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -185,14 +185,30 @@
                   moduleName = "PlayGoTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/darshana/Darshana/Paygotest/playgotest/PlayGoTest/FilteredViewController.swift"
-                  timestampString = "521982667.012077"
+                  timestampString = "521729337.956424"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "41"
                   endingLineNumber = "41"
-                  offsetFromSymbolStart = "10502">
+                  offsetFromSymbolStart = "7672">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PlayGoTest/ViewController.swift"
+            timestampString = "521729565.675513"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
