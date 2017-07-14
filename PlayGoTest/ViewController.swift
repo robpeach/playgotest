@@ -149,7 +149,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of feed items
-        return feedItems.count
+        return filteredFeedItems.count
         
     }
     
@@ -162,7 +162,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Retrieve cell
         let myCell = Bundle.main.loadNibNamed("TableViewCell1", owner: self, options: nil)?.first as! TableViewCell1
         // Get the location to be shown
-        let item: LocationModel = feedItems[indexPath.row] as! LocationModel
+        let item: LocationModel = filteredFeedItems[indexPath.row] as! LocationModel
         // Get references to labels of cell
         myCell.selectionStyle = .none
         myCell.eventLabel.text = item.event
@@ -179,6 +179,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         myCell.timeLabel.text = date12
         if(currentLocation != nil)
         {
+
             let distance = item.distance(to: currentLocation);
             let formatter = NumberFormatter()
             formatter.minimumFractionDigits = 2
@@ -201,14 +202,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         
         
-        
         return myCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected location to var
-        selectedLocation = feedItems[indexPath.row] as! LocationModel
+        selectedLocation = filteredFeedItems[indexPath.row] as! LocationModel
         // Manually call segue to detail view controller
         self.performSegue(withIdentifier: "detailSegue", sender: self)
         
@@ -272,7 +272,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             else if (filteredType == FilterType.tomorrow)
             {
-                let dtTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+                var dtTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
                 dateToFilter =  inputFormatter.string(from: dtTomorrow!);
             }
             else if (filteredType == FilterType.saturday)
@@ -281,18 +281,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             else if (filteredType == FilterType.sunday)
             {
-                
-                
                 dateToFilter =  inputFormatter.string(from: getWeekend(day: 1));
-                
             }
             
             
             let resultPredicate = NSPredicate(format: "date contains[c] %@", dateToFilter)
             filteredFeedItems  = feedItems.filtered(using: resultPredicate) as NSArray
+
             self.performSegue(withIdentifier: "show_filtteredfeed", sender: self)
         }
-        
     }
     @IBAction func sortbySelectedField(_ sender: Any)
     {
@@ -303,7 +300,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             self.listTableView.reloadData()
         }
-        
     }
     
     @IBAction func sortByDistancePressed(_ sender: Any) {
@@ -359,9 +355,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if status == .authorizedWhenInUse {
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-            //            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
-            //            print("locations = \(locValue.latitude) \(locValue.longitude)")
-            //
             
             
             //            let location1 = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
