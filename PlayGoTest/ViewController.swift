@@ -149,7 +149,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of feed items
-        return filteredFeedItems.count
+        return feedItems.count
         
     }
     
@@ -162,7 +162,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Retrieve cell
         let myCell = Bundle.main.loadNibNamed("TableViewCell1", owner: self, options: nil)?.first as! TableViewCell1
         // Get the location to be shown
-        let item: LocationModel = filteredFeedItems[indexPath.row] as! LocationModel
+        let item: LocationModel = feedItems[indexPath.row] as! LocationModel
         // Get references to labels of cell
         myCell.selectionStyle = .none
         myCell.eventLabel.text = item.event
@@ -208,7 +208,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected location to var
-        selectedLocation = filteredFeedItems[indexPath.row] as! LocationModel
+        selectedLocation = feedItems[indexPath.row] as! LocationModel
         // Manually call segue to detail view controller
         self.performSegue(withIdentifier: "detailSegue", sender: self)
         
