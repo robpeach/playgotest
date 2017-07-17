@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5DAA2671A26DD3C7AFFF4107 /* Pods_PlayGoTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89A73701535DEFE64E349DDE /* Pods_PlayGoTest.framework */; };
+		7DA21E981F29FAEE0076713E /* FilteredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA21E971F29FAEE0076713E /* FilteredViewController.swift */; };
 		D41E5B991F0BAE6D003A0DEF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41E5B981F0BAE6D003A0DEF /* AppDelegate.swift */; };
 		D41E5B9B1F0BAE6D003A0DEF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41E5B9A1F0BAE6D003A0DEF /* ViewController.swift */; };
 		D41E5B9E1F0BAE6D003A0DEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D41E5B9C1F0BAE6D003A0DEF /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7DA21E971F29FAEE0076713E /* FilteredViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredViewController.swift; sourceTree = "<group>"; };
 		89A73701535DEFE64E349DDE /* Pods_PlayGoTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PlayGoTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2E6F98B454150D95A24E28D /* Pods-PlayGoTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGoTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-PlayGoTest/Pods-PlayGoTest.release.xcconfig"; sourceTree = "<group>"; };
 		D0A244CBAD9F435A370DDE71 /* Pods-PlayGoTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlayGoTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PlayGoTest/Pods-PlayGoTest.debug.xcconfig"; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				D41E5BA11F0BAE6D003A0DEF /* LaunchScreen.storyboard */,
 				D41E5BA41F0BAE6D003A0DEF /* Info.plist */,
 				D4D6ADA41F0D0D5F003EB2BC /* Podfile */,
+				7DA21E971F29FAEE0076713E /* FilteredViewController.swift */,
 			);
 			path = PlayGoTest;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 				D45E96181F16680C00BFCF9C /* FirstViewController.swift in Sources */,
 				D41E5BAF1F0BB768003A0DEF /* DetailViewController.swift in Sources */,
 				D4D6ADA21F0CFBA2003EB2BC /* TableViewCell1.swift in Sources */,
+				7DA21E981F29FAEE0076713E /* FilteredViewController.swift in Sources */,
 				D41E5B991F0BAE6D003A0DEF /* AppDelegate.swift in Sources */,
 				D41E5BAB1F0BB341003A0DEF /* HomeModel.swift in Sources */,
 			);

@@ -19,7 +19,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var tomorrowBtn : UIButton!
     @IBOutlet weak var satBtn : UIButton!
     @IBOutlet weak var sunBtn : UIButton!
-    @IBOutlet weak var allBtn : UIButton!
     @IBOutlet weak  var satBtnWidth : NSLayoutConstraint!
     var sortedbyDistance : Bool!
     var feedItems: NSArray = NSArray()
@@ -94,7 +93,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         ConfigButtonUI(btn: tomorrowBtn);
         ConfigButtonUI(btn: satBtn);
         ConfigButtonUI(btn: sunBtn);
-        ConfigButtonUI(btn: allBtn);
+        
         let today = getDayOfWeek();
         
         if(today == 5)
@@ -143,13 +142,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         feedItems = items
         //
-        sortAndFilterData();
+        feedItems =    feedItems.sorted(by: {ComapreDateAndDistance(obj1: $0 as! LocationModel,obj2: $1 as! LocationModel)
+        }) as NSArray;
         self.listTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Return the number of feed items
-        return filteredFeedItems.count
+        return feedItems.count
         
     }
     
@@ -162,7 +162,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Retrieve cell
         let myCell = Bundle.main.loadNibNamed("TableViewCell1", owner: self, options: nil)?.first as! TableViewCell1
         // Get the location to be shown
-        let item: LocationModel = filteredFeedItems[indexPath.row] as! LocationModel
+        let item: LocationModel = feedItems[indexPath.row] as! LocationModel
         // Get references to labels of cell
         myCell.selectionStyle = .none
         myCell.eventLabel.text = item.event
@@ -179,13 +179,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         myCell.timeLabel.text = date12
         if(currentLocation != nil)
         {
-        let distance = item.distance(to: currentLocation);
-        let formatter = NumberFormatter()
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        let  strDistanceInMiles = formatter.string(from: NSNumber(value: distance)) ?? "\(distance)"
-        
-        myCell.distanceLable.text = strDistanceInMiles + " miles" ;
+            let distance = item.distance(to: currentLocation);
+            let formatter = NumberFormatter()
+            formatter.minimumFractionDigits = 2
+            formatter.maximumFractionDigits = 2
+            let  strDistanceInMiles = formatter.string(from: NSNumber(value: distance)) ?? "\(distance)"
+            
+            myCell.distanceLable.text = strDistanceInMiles + " miles" ;
         }
         let stringB = formattedDateFromString(dateString: (item.date)!, withFormat: "d MMM")
         
@@ -200,7 +200,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         
-      
+        
         
         return myCell
     }
@@ -208,7 +208,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Set selected location to var
-        selectedLocation = filteredFeedItems[indexPath.row] as! LocationModel
+        selectedLocation = feedItems[indexPath.row] as! LocationModel
         // Manually call segue to detail view controller
         self.performSegue(withIdentifier: "detailSegue", sender: self)
         
@@ -216,11 +216,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        // Get reference to the destination view controller
-        let detailVC  = segue.destination as! DetailViewController
-        // Set the property to the selected location so when the view for
-        // detail view controller loads, it can access that property to get the feeditem obj
-        detailVC.selectedLocation = selectedLocation
+        if(segue.identifier == "show_filtteredfeed")
+        {
+            let filteredVC = segue.destination as! FilteredViewController
+            filteredVC.filteredFeedItems = self.filteredFeedItems;
+            filteredVC.currentLocation = self.currentLocation;
+        }
+        else{
+            let detailVC  = segue.destination as! DetailViewController
+            detailVC.selectedLocation = selectedLocation
+        }
+        
+        
     }
     
     
@@ -261,11 +268,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if(filteredType == FilterType.today)
             {
                 let today  = Date()
-             dateToFilter =  inputFormatter.string(from: today);
+                dateToFilter =  inputFormatter.string(from: today);
             }
             else if (filteredType == FilterType.tomorrow)
             {
-                var dtTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+                let dtTomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())
                 dateToFilter =  inputFormatter.string(from: dtTomorrow!);
             }
             else if (filteredType == FilterType.saturday)
@@ -274,19 +281,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             }
             else if (filteredType == FilterType.sunday)
             {
-            
-            
-                 dateToFilter =  inputFormatter.string(from: getWeekend(day: 1));
-               
+                
+                
+                dateToFilter =  inputFormatter.string(from: getWeekend(day: 1));
+                
             }
             
             
             let resultPredicate = NSPredicate(format: "date contains[c] %@", dateToFilter)
             filteredFeedItems  = feedItems.filtered(using: resultPredicate) as NSArray
+            self.performSegue(withIdentifier: "show_filtteredfeed", sender: self)
         }
-        else{
-            filteredFeedItems  = feedItems.copy() as! NSArray;
-        }
+        
     }
     @IBAction func sortbySelectedField(_ sender: Any)
     {
@@ -297,7 +303,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
             self.listTableView.reloadData()
         }
-    
+        
     }
     
     @IBAction func sortByDistancePressed(_ sender: Any) {
@@ -353,9 +359,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if status == .authorizedWhenInUse {
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-//            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
-//            print("locations = \(locValue.latitude) \(locValue.longitude)")
-//
+            //            let locValue: CLLocationCoordinate2D = (manager.location?.coordinate)!
+            //            print("locations = \(locValue.latitude) \(locValue.longitude)")
+            //
             
             
             //            let location1 = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
@@ -401,8 +407,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             print((item as! LocationModel).distance(to: currentLocation));
         }
         
-        //NEEDS TO SHOW EVENTS THAT ARE TODAY 
-
+        //NEEDS TO SHOW EVENTS THAT ARE TODAY
+        
         
         DispatchQueue.main.async{
             
@@ -430,4 +436,5 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let lon = formatter.string(from: NSNumber(value: currentLocation.coordinate.longitude));
         lblCurrentLOcation.text = "myLocation: " + lat! + ", " + lon!;
     }
+    
 }
