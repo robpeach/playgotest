@@ -51,12 +51,18 @@ class LocationModel: NSObject {
         return CLLocation(latitude: Double(self.latitude!)!, longitude: Double(self.longitude!)!);
     }
     
-    
+    var eventDate: Date{
+        let simpleDateFormat = DateFormatter()
+        simpleDateFormat.dateFormat = "yyyy-MM-dd HH:mm" //format our date String
+        let eventdt = simpleDateFormat.date(from: self.date! + " " + self.time!)
+        return eventdt!
+    }
     func distance(to location: CLLocation) -> CLLocationDistance {
         let distanceinmeter = location.distance(from: self.location)
         let distanceinmiles = distanceinmeter / 1609.344;
         return distanceinmiles;
     }
+    
     
     //prints object's current state
     
